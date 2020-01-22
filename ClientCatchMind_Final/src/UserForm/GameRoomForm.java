@@ -558,6 +558,18 @@ public class GameRoomForm extends JPanel implements UserForm {
 			case "3TIMEOUT": // timer - timeout
 				timeData.setText("");
 				break;
+			case "3SCORE":	 // get score data
+				JSONArray userList = (JSONArray)(jsonObj.get("userList"));
+				for(int i = 0; i < userList.size(); i++) {
+					System.out.print("id : " + ((JSONObject)userList.get(i)).get("id"));
+					System.out.print(", lv : " + ((JSONObject)userList.get(i)).get("lv"));
+					System.out.print(", exp : " + ((JSONObject)userList.get(i)).get("exp"));
+					System.out.print(", cnt : " + ((JSONObject)userList.get(i)).get("cnt"));
+					System.out.print(", rank : " + ((JSONObject)userList.get(i)).get("rank"));
+					System.out.print(", isUp : " + ((JSONObject)userList.get(i)).get("isUp"));
+					System.out.print(", expPlus : " + ((JSONObject)userList.get(i)).get("expPlus"));
+					System.out.println();
+				}
 			}
 		} catch (Exception e) {
 
