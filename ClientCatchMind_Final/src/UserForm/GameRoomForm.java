@@ -75,6 +75,7 @@ public class GameRoomForm extends JPanel implements UserForm {
 	JTextField tf = new JTextField();
 	JProgressBar jb;
 	JPanel back = new JPanel();
+	JLabel timeData = new JLabel();
 
 	ImageIcon backgroundImg = new ImageIcon(getClass().getResource("..\\Resource\\frame.png"));
 
@@ -247,26 +248,20 @@ public class GameRoomForm extends JPanel implements UserForm {
 		add(tf);
 
 		// 7.타이머
-//      timeBar = new TimeBar(120);
-//      timeBar.setValue(0);
-//      round.setBounds(810, 630, 350, 70);
-//      round.setLayout(null);
-//      round.setBackground(color);
-//      round.add(timeBar);
-//      
-//      
-//      //timer.setBounds(15, 630, 250, 150);
-//      roundLabel.setBounds(10,315,230,100);
-//      timer.add(roundLabel);
-//      
-//      timeBar.setEnabled(true);
-//      Border four =  BorderFactory.createTitledBorder(new LineBorder(colorout,3),"타이머");
-//      ((TitledBorder) four).setTitleJustification(TitledBorder.CENTER);
-//      ((TitledBorder) four).setTitleFont(font);
-//      ((TitledBorder) four).setTitleColor(colorout);
-//       round.setBorder(four);
-//      add(round);
-
+		
+		  // timeBar = new TimeBar(120); // timeBar.setValue(0); //
+		  timer.setBounds(910, 630, 250, 105); // round.setLayout(null); //
+		  timer.setBackground(new Color(24, 148, 198)); // round.add(timeBar); // // //
+		  //timer.setBounds(15, 630, 250, 150); //
+		  //roundLabel.setBounds(10,315,230,100); // timer.add(roundLabel); // //
+		  //timeBar.setEnabled(true); // Border four =
+		  timer.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.WHITE, 4), "타이머",
+					TitledBorder.CENTER, TitledBorder.TOP, font_Title, Color.white));//
+		  timer.setFont(font_Title);
+		  timer.add("Center", timeData);
+		  //(four).setTitleColor(colorout); // round.setBorder(four); // add(round);
+		  add(timer);
+		 
 		// 9.버튼
 		p.setLayout(new GridLayout(3, 1, 0, 15));
 		p.setBounds(1175, 630, 250, 150);
@@ -556,10 +551,12 @@ public class GameRoomForm extends JPanel implements UserForm {
 				break;
 			case "3TIMER": // timer - on
 				String tick = String.valueOf(jsonObj.get("tick"));
-				timeBar.setValue(Integer.parseInt(tick));
+				System.out.println("tick : " + tick);
+				int time = Integer.parseInt(tick);
+				timeData.setText((int)(time/60)+" : "+time%60);
 				break;
 			case "3TIMEOUT": // timer - timeout
-				timeBar.setValue(0);
+				timeData.setText("");
 				break;
 			}
 		} catch (Exception e) {
@@ -580,6 +577,7 @@ public class GameRoomForm extends JPanel implements UserForm {
 		}
 		roundLabel.setText("");
 		answerLabel.setText("");
+		timeData.setText("");
 	}
 
 	public UserMessageProcessor getUserMessageProcessor() {

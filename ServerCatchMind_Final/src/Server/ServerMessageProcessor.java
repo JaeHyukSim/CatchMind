@@ -200,6 +200,14 @@ public class ServerMessageProcessor {
 					 user.getStation().unicastObserver(sendData, users.get(i));
 				 }
 				 return;
+			 case "TIMEEND":	 // timer 끝
+				 users = rd.getUserList();
+				 user = rd.getUserList().get(0);
+				 sendData = messageRoundEnd((ServerFromUser)user);
+				 for(int i = 0; i < users.size(); i++) {
+					 user.getStation().unicastObserver(sendData, users.get(i));
+				 }
+				 return;
 			}
 		}catch(Exception e) {
 			System.out.println("ServerMessageProcessor - processingTimer Exception");
@@ -1378,7 +1386,7 @@ public class ServerMessageProcessor {
 			}
 		}
 		
-		rd.setTimer(new Timer(this,rd, 120));
+		rd.setTimer(new Timer(this,rd, 1));
 		Thread t = new Thread(rd.getTimer());
 		t.start();
 		
