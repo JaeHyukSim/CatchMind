@@ -88,7 +88,7 @@ public class ServerFromUser implements Runnable, Observer{
 			if(roomId.equals("0") == false) {
 				System.out.println("delete operation ok! remove room target!");
 				
-				tmp = "{\"method\":\"3600\"}";
+				tmp = "{\"method\":\"3601\"}";
 				tmp = serverMessageProcessor.processingServerMessage(tmp, this);
 			}
 			station.removeObserver(this);

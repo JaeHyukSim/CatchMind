@@ -726,7 +726,7 @@ public class ServerMessageProcessor {
 			/////////////////////////////////////////////////////////////////
 				boolean isExistRoom = true;
 				// 1. request -> 2. remove from room(find room and remove usr)
-				// 3. register to wait room 4. init user's wait room 5. update other usr
+				// 3. register to waiting room 4. init user's waiting room 5. update other usr
 
 				index = sfu.getStation().findRoomObserver(sfu.getRoomId());
 				rd = sfu.getStation().getRoomUserList().get(index);
@@ -800,6 +800,73 @@ public class ServerMessageProcessor {
 					sfu.setReadyState("0");
 				}
 				return sendData;
+				
+			case "3601": // get out from room - compelled
+					isExistRoom = true;
+					// 1. request -> 2. remove from room(find room and remove usr)
+					// 3. register to waiting room 4. init user's waiting room 5. update other usr
+
+					index = sfu.getStation().findRoomObserver(sfu.getRoomId());
+					rd = sfu.getStation().getRoomUserList().get(index);
+					if (sfu.getStation().getRoomUserList().get(index).getCountOfCurrentUser().equals("1")) {
+						isExistRoom = false;
+					}
+					sfu.getStation().removeRoomObserverTarget(sfu.getRoomId(), sfu);
+
+					// init waitroom for me -> chat clear
+					// broadcast data to all (wait)
+					sendData = getAllListData(sfu);
+					sfu.getStation().broadcastWaitObserver(sendData);
+
+					// broadcast data to all (room) 1. find room 2. broadcast
+					if (isExistRoom == true) {
+
+						sendData = getAllGameData(sfu);
+						sfu.getStation().broadcastRoomObserver(sendData, sfu.getRoomId());
+
+						if (rd.getRoomState().equals("gaming")) {
+							// 1. the people getting out is a master
+
+							if (rd.getIdOfMasterUser().equals(sfu.getId())) {
+								rd.setIdOfMasterUser(rd.getUserList().get(0).getId());
+							}
+							////////////////////////////////////////////////////
+							ServerFromUser man = (ServerFromUser) rd.getUserList().get(0);
+							////////////////////////////////////////////////////
+							// 3. rest people count == 1
+							if (rd.getCountOfCurrentUser().equals("1")) {
+								// game over
+								messageGameEnd(man);
+							} else {
+								sendData = messageRoundEnd(man);
+								sfu.getStation().broadcastRoomObserver(sendData, sfu.getRoomId());
+							}
+						}
+						// if the man is a master - waiting state
+						if (rd.getRoomState().equals("waiting")) {
+							if (rd.getIdOfMasterUser().equals(sfu.getId())) {
+								System.out.println("out master");
+								rd.setIdOfMasterUser(rd.getUserList().get(0).getId());
+								// sendData who is master? + init all ready state
+								sendData = messageInitReady(sfu);
+								sfu.getStation().broadcastRoomObserver(sendData, sfu.getRoomId());
+							}
+							sendData = messageForMaster(sfu);
+							sfu.getStation().broadcastRoomObserver(sendData, sfu.getRoomId());
+							sendData = messageIAmMaster(sfu);
+							index = 0;
+							for (int i = 0; i < rd.getUserList().size(); i++) {
+								if (rd.getIdOfMasterUser().equals(rd.getUserList().get(i).getId())) {
+									index = i;
+									break;
+								}
+							}
+							sfu.getStation().unicastObserver(sendData, rd.getUserList().get(index));
+							sendData = messageAllReady(sfu);
+							sfu.getStation().broadcastRoomObserver(sendData, sfu.getRoomId());
+						}
+					}
+					return sendData;
 			case "3700": // DRAW - get draw coordinate - x, y
 				// 1. don't use graphic algorithm
 
@@ -1386,7 +1453,7 @@ public class ServerMessageProcessor {
 			}
 		}
 		
-		rd.setTimer(new Timer(this,rd, 1));
+		rd.setTimer(new Timer(this,rd, 100));
 		Thread t = new Thread(rd.getTimer());
 		t.start();
 		
