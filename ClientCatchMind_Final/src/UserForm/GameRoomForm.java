@@ -9,6 +9,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -88,6 +89,14 @@ public class GameRoomForm extends JPanel implements UserForm {
 
 	private ImageIcon[] chIcon;
 
+	///////////// score dialog
+	private JTable scoreTable;
+	private DefaultTableModel scoreModel;
+	private JScrollPane scoreScroll;
+	private JDialog scoreDialog;
+	private String[] col = {"등수","ID","맞힌갯수","레벨","경험치","  "};
+	private String[][] row;
+	
 	// 9. Singleton pattern의 유일한 instance를 만들기 위해 getInstance()메소드를 만듭니다.
 	public static GameRoomForm getInstance(DisplayThread dt, Socket socket) {
 		if (uniqueInstance == null) {
@@ -110,6 +119,20 @@ public class GameRoomForm extends JPanel implements UserForm {
 
 	private GameRoomForm(DisplayThread dt, Socket socket) {
 
+		row = new String[0][col.length];
+		scoreDialog = new JDialog();
+		scoreModel = new DefaultTableModel(row, col) {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+		scoreTable = new JTable(scoreModel);
+		scoreScroll = new JScrollPane(scoreTable);
+		scoreDialog.add(scoreScroll);
+		scoreDialog.setBounds(500, 200, 700, 500);
+		
+		
 		chIcon = new ImageIcon[4];
 		for (int i = 0; i < chIcon.length; i++) {
 			chIcon[i] = new ImageIcon(getClass().getResource("..\\Resource\\cch" + (i + 1) + ".png"));
@@ -570,6 +593,26 @@ public class GameRoomForm extends JPanel implements UserForm {
 					System.out.print(", expPlus : " + ((JSONObject)userList.get(i)).get("expPlus"));
 					System.out.println();
 				}
+				
+					scoreModel.setNumRows(0);
+					String[] scoreData = new String[6];
+				
+				for(int i = 0; i < userList.size(); i++) {
+					scoreData[0] = String.valueOf(((JSONObject)userList.get(i)).get("rank")) + "등!";
+					scoreData[1] = String.valueOf(((JSONObject)userList.get(i)).get("id")) + "님";
+					scoreData[2] = String.valueOf(((JSONObject)userList.get(i)).get("cnt")) +"개";
+					scoreData[3] = String.valueOf(((JSONObject)userList.get(i)).get("lv"));
+					scoreData[4] = String.valueOf(((JSONObject)userList.get(i)).get("exp")) +
+							"("+ ((JSONObject)userList.get(i)).get("expPlus") +")";
+					if(String.valueOf(((JSONObject)userList.get(i)).get("isUp")).equals("true")) {
+						scoreData[5] = "레벨 업!";
+					}else {
+						scoreData[5] = "";
+					}
+					scoreModel.addRow(scoreData);
+				}
+				scoreDialog.setVisible(true);
+				break;
 			}
 		} catch (Exception e) {
 

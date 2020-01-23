@@ -9,6 +9,7 @@ import java.io.FileWriter;
 import java.io.IOError;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -1652,7 +1653,22 @@ public class ServerMessageProcessor {
 				}
 			}
 			setFileData();
+			json = null;
 		}
+		
+		//sort algorithm
+		int index = 0;
+		for(int i = 0; i < scoreUsers.size()-1; i++) {
+			index = i;
+			for(int j = i+1; j < scoreUsers.size(); j++) {
+				if(Integer.parseInt(scoreUsers.get(index)[4]) > Integer.parseInt(scoreUsers.get(j)[4])) {
+					index = j;
+				}
+			}
+			Collections.swap(scoreUsers, index, i);
+			
+		}
+		
 		// make message
 		sendData = "{";
 		sendData += getJSONData("method", "3SCORE");
