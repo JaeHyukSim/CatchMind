@@ -288,7 +288,7 @@ public class GrSketch extends JPanel implements UserForm, ChangeListener {
 		colorskyblue.addActionListener(my);
 		colorGray.addActionListener(my);
 
-	//	colorSelect_bt.addActionListener(my);
+		// colorSelect_bt.addActionListener(my);
 		// ���찳 ��ư ó��
 
 		// eraser_bt.addActionListener(new ToolActionListener());
@@ -464,28 +464,6 @@ public class GrSketch extends JPanel implements UserForm, ChangeListener {
 			// 13. 데이터를 서버로 보냅니다!
 			unt.setInputData(sendData);
 			unt.pushMessage();
-			/*
-			 * startX = e.getX(); //���콺 �������� X��ǥ������ �ʱ�ȭ startY = e.getY(); //���콺
-			 * �������� Y��ǥ������ �ʱ�ȭ can.x=startX; can.y=startY;
-			 * 
-			 * can.repaint(); thickness = Integer.parseInt(thicknessControl_tf.getText());
-			 * 
-			 * //�ؽ�Ʈ �ʵ� �κп��� ���� ������ thickness������ ����
-			 * 
-			 * 
-			 * 
-			 * endX = e.getX(); //�巡�� �Ǵ� �������� x��ǥ ����
-			 * 
-			 * 
-			 * endY = e.getY(); //�巡�� �Ǵ� �������� y��ǥ ����
-			 * 
-			 * 
-			 * startX = endX; // ���ۺκ��� �������� �巹�׵� X��ǥ�� ������ ������ �̾� �׷��� ��
-			 * �ִ�.
-			 * 
-			 * startY = endY; // ���ۺκ��� �������� �巹�׵� Y��ǥ�� ������ ������ �̾� �׷��� ��
-			 * �ִ�.
-			 */
 		}
 
 		@Override
@@ -630,8 +608,28 @@ public class GrSketch extends JPanel implements UserForm, ChangeListener {
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			// TODO Auto-generated method stub
+			// 서버로 보내봅시다.
+			// 1. 메소드를 정해봅시다. 3700 -> 3702
+			String sendData = "{";
+			sendData += userMessageProcessor.getJSONData("method", "3700");
+			sendData += "," + userMessageProcessor.getJSONData("x", String.valueOf(e.getX()));
+			sendData += "," + userMessageProcessor.getJSONData("y", String.valueOf(e.getY()));
+			sendData += "," + userMessageProcessor.getJSONData("color", String.valueOf(color));
+			sendData += "," + userMessageProcessor.getJSONData("brushSize", String.valueOf(brushSize));
+			sendData += "}";
 
+			// 13. 데이터를 서버로 보냅니다!
+			unt.setInputData(sendData);
+			unt.pushMessage();
+
+			// 1. 메소드를 정해봅시다. 3700 -> 3702
+			sendData = "{";
+			sendData += userMessageProcessor.getJSONData("method", "3720");
+			sendData += "}";
+
+			// 13. 데이터를 서버로 보냅니다!
+			unt.setInputData(sendData);
+			unt.pushMessage();
 		}
 
 		@Override

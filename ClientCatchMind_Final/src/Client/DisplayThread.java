@@ -51,7 +51,7 @@ public class DisplayThread extends JFrame implements Runnable{
 		//layout - card
 		card = new CardLayout();
 		setLayout(card);
-		
+		this.setResizable(true);
 		
 		//to construct form
 		login = LoginFormVer1.getInstance(this, socket);
@@ -71,8 +71,8 @@ public class DisplayThread extends JFrame implements Runnable{
 		
 		 
 		//exit
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setVisible(true);
 	}
 	

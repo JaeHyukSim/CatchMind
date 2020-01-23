@@ -111,7 +111,7 @@ public class ServerMessageProcessor {
 	}
 
 	// put to variable 'userData' from File
-	public void getFileData() {
+	public synchronized void getFileData() {
 		File file = new File(filePath + "..\\..\\src\\Resource\\ServerResource\\userData.json");
 
 		try {
@@ -145,7 +145,7 @@ public class ServerMessageProcessor {
 	}
 
 	// Save to file
-	public void setFileData() {
+	public synchronized void setFileData() {
 		File file = new File(filePath + "..\\..\\src\\Resource\\ServerResource\\userData.json");
 		try {
 			BufferedWriter bw = new BufferedWriter(new FileWriter(file));
@@ -410,6 +410,8 @@ public class ServerMessageProcessor {
 				// first. 1302 -> init login form
 				sendData = "{";
 				sendData += getJSONData("method", "1302");
+				sendData += "," + getJSONData("lv", sfu.getLv());
+				sendData += "," + getJSONData("exp", sfu.getExp());
 				sendData += "}";
 				sfu.getStation().unicastObserver(sendData, sfu);
 				// second. 1312 -> card show
@@ -1641,19 +1643,22 @@ public class ServerMessageProcessor {
 			System.out.println("message rank set userData id(" + users.get(i).getId() +") : LV : " + users.get(i).getLv()
 					+ ", EXP : " + users.get(i).getExp());
 			
+			
 			JSONArray originalArray = (JSONArray) userData.get("USER_DATA");
+			JSONObject jsonSave = new JSONObject();
 			//json.clear();
 			//array에서  해당 위치의 정보를 가져온다
 			for(int j = 0; j < originalArray.size(); j++) {
-				json = ((JSONObject)(originalArray.get(i)));
-				if(   json.get("id").equals(users.get(i).getId())  ) {
-					System.out.println("message rank : json id -> " + json.get("id"));
-					json.put("lv", users.get(i).getLv());
-					json.put("exp", users.get(i).getExp());
+				System.out.println("message rank : json array operation -> id : " + ((JSONObject)(originalArray.get(j))).get("id"));
+				jsonSave = ((JSONObject)(originalArray.get(j)));
+				if(   jsonSave.get("id").equals(users.get(i).getId())  ) {
+					System.out.println("message rank : json id -> " + jsonSave.get("id"));
+					jsonSave.put("lv", users.get(i).getLv());
+					jsonSave.put("exp", users.get(i).getExp());
 				}
 			}
 			setFileData();
-			json = null;
+			
 		}
 		
 		//sort algorithm

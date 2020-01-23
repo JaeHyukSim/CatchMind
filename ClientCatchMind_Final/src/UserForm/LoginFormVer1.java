@@ -105,6 +105,8 @@ public class LoginFormVer1 implements UserForm{
 	
 	private ImageIcon[] chImage;
 	
+	private JButton exit;
+	
 	//6. 생성자를 만듭니다!!! - private인 것을 주의합시다!!!
 	private LoginFormVer1(DisplayThread dt, Socket socket) {
 		//new를 사용해서 Thread와 component 생성
@@ -163,6 +165,7 @@ public class LoginFormVer1 implements UserForm{
 		changeInfo = new JButton("정보 변경");
 		withdrawal = new JButton("회원 탈퇴");
 		logout = new JButton("로그아웃");
+		exit = new JButton("종료");
 		
 		chImage = new ImageIcon[4];
 		
@@ -255,6 +258,8 @@ public class LoginFormVer1 implements UserForm{
 		withdrawal.setBounds(115, 120, 90, 25);
 		logout.setBounds(210, 120, 90, 25);
 		
+		exit.setBounds(210, 300, 90, 25);
+		
 		jpanel.add(gamePanel);
 		jpanel.add(loginPanel);
 		
@@ -281,6 +286,7 @@ public class LoginFormVer1 implements UserForm{
 		
 		loginOkLabel.add(withdrawal);
 		loginOkLabel.add(logout);
+		inputPanel.add(exit);
 	}
 
 	@Override
@@ -399,6 +405,13 @@ public class LoginFormVer1 implements UserForm{
 				unt.pushMessage();
 			}
 		});
+		exit.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
 		
 		withdrawal.addActionListener(new ActionListener() {
 			
@@ -480,6 +493,8 @@ public class LoginFormVer1 implements UserForm{
 			break;
 		case "1302": // init login form
 			init();
+			lvLabel.setText(String.valueOf(jsonObj.get("lv")));
+			expLabel.setText(String.valueOf(jsonObj.get("exp")));
 			break;
 		case "1312": // card show change to login
 			displayThread.setSize(displayThread.WIDTH, displayThread.HEIGHT);
