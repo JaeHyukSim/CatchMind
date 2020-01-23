@@ -23,5 +23,4 @@ public class Client {
 			System.out.println("in Client -> error : socket");
 		}
 	}
-
 }
