@@ -56,6 +56,7 @@ public class WaitingRoomForm extends JPanel implements UserForm, ActionListener,
 	private JButton b1, b2, b3, b4;
 
 	private Image back;
+	
 ////////////////////////////////////////////////////////////
 	JLabel greet, myLv, myID, myExp;
 	private MakeRoom_Dialog makeroom_dialog;
@@ -251,6 +252,7 @@ public class WaitingRoomForm extends JPanel implements UserForm, ActionListener,
 
 		table1.addMouseListener(this);
 		table2.addMouseListener(this);
+		
 ////////////////////////////////////////////////////////////
 	}
 
@@ -292,7 +294,11 @@ public class WaitingRoomForm extends JPanel implements UserForm, ActionListener,
 
 				break;
 			case "2102": // chat method
-				ta.setText(ta.getText() + "\n" + (String) jsonObj.get("chat"));
+				String resText = (String) jsonObj.get("chat");
+				resText = resText.replace(";", ";\n")
+						.replace("{", "{\n")
+						.replace("}", "}\n");
+				ta.setText(ta.getText() + "\n" + resText);
 				//////////////////////////////////////////////////////
 				ta.setCaretPosition(ta.getDocument().getLength());
 				//////////////////////////////////////////////////////
@@ -436,18 +442,28 @@ public class WaitingRoomForm extends JPanel implements UserForm, ActionListener,
 		// TODO Auto-generated method stub
 		return this;
 	}
-
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		// 엔터를 쳤을 때 함수로 들어오게되고 그게 tf라면
 		if (e.getSource() == tf) {
 
+			//tf의 문자를 replace
+			String resText = "";
+			resText = tf.getText();
+			System.out.println("restext first : " + resText);
+			resText = resText.replace("\\", "\\\\")
+			.replace("\'", "\\\'")
+			.replace("\"", "\\\"")
+			.replace("\r\n", "\\n")
+			.replace("\n", "\\\n");
+			System.out.println("restext second : " + resText);
 			// 서버로 보내봅시다.
 			// 1. 메소드를 정해봅시다. 2100 -> 2102
 			String sendData = "{";
 			sendData += userMessageProcessor.getJSONData("method", "2100");
-			sendData += "," + userMessageProcessor.getJSONData("chat", tf.getText());
+			sendData += "," + userMessageProcessor.getJSONData("chat", resText);
 			sendData += "}";
 
 			tf.setText("");
@@ -473,6 +489,7 @@ public class WaitingRoomForm extends JPanel implements UserForm, ActionListener,
 //			ta.append(temp);
 
 		}
+		
 		if (e.getSource() == b2) {
 			makeroom_dialog.setVisible(true);
 

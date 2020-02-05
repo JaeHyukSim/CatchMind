@@ -392,8 +392,14 @@ public class ServerMessageProcessor {
 				return sendData;
 			case "2100":
 				System.out.println("get method : 2100");
+				String resText = (String) jsonObj.get("chat");
+				resText = resText.replace("\\", "\\\\")
+						.replace("\'", "\\\'")
+						.replace("\"", "\\\"")
+						.replace("\r\n", "\\n")
+						.replace("\n", "\\\n");
 				sendData += getJSONData("method", "2102");
-				sendData += "," + getJSONData("chat", sfu.getId() + " -> " + (String) jsonObj.get("chat"));
+				sendData += "," + getJSONData("chat", sfu.getId() + " -> " + resText);
 				sendData += "}";
 				sfu.getStation().broadcastWaitObserver(sendData);
 				return sendData;
