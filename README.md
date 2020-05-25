@@ -9,6 +9,13 @@
 
 ----------
 
+### 기술 스택과 사용 도구
+- Java
+- Eclipse
+- DB(DB는 따로 사용하지 않고, 파일 입출력을 이용)
+
+----------
+
 ### catch-mind를 통해 배우기
 1. TCP socket programming을 직접 구현함으로써 Network에 필요한 sources, 동작 원리의 이해도를 향상시킨다.
 2. Design pattern을 공부하면서 Singleton Pattern으로 화면과 사용자의 생성을 제어하고, Observer Pattern으로 서버로부터 등록되고, 특정 조건을 만족하는 클라이언트끼리 초대, 귓말, 채팅, 대기실, 게임방 참가 등을 구현한다. Strategy pattern으로 User forms를 Interface를 활용해서 쉽게 전환하도록 한다.
@@ -20,6 +27,18 @@
 -----------
 
 ### 나의 담당 부분과 기능 구현
+1. 로그인 구현 : 모든 유효성 검사 수행, 2 JSON형태로 저장되는 User 정보-다음 공부해야 할 부분 : User 정보 암호화하기
+2. 그래픽 알고리즘 - 보간법, sliding algorithm
+3. 채팅 구현 - Observer Pattern
+4. 게임 진행 로직
+5. 점수와 레벨 반영
+
+-----------
+
+### 동작시키는 방법
+1. eclipse에 pull
+2. serverCatchmindFinal의 Server.java 실행
+3. clientCatchmindFinal의 Client.java 실행
 
 -----------
 
