@@ -57,5 +57,5 @@
 
 [catch-mind-game 보러가기!!!][catchmind-game-link]
 
-[catchmind-game-link]: https://www.youtube.com/watch?v=6aucj54OD7I "Go catch mind!"
+[catchmind-game-link]: https://www.youtube.com/watch?v=i-aK17CDxKg "Go catch mind!"
 -----------
