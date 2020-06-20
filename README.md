@@ -50,4 +50,8 @@
 [catch-mind-login 보러가기!][catchmind-login-link]
 
 [catchmind-login-link]: https://www.youtube.com/watch?v=t8yO0Vgn35Y "Go login form"
+
+[catch-mind-waiting room and game room 보러가기!][catchmind-wait-link]
+
+[catchmind-wait-link]: https://www.youtube.com/watch?v=6aucj54OD7I "Go waiting, gaming room form!"
 -----------
