@@ -47,5 +47,7 @@
 -----------
 
 ### 시연 영상
+[catch-mind-login 보러가기!][catchmind-login-link]
 
+[catchmind-login-link]: https://www.youtube.com/watch?v=t8yO0Vgn35Y "Go login form"
 -----------
